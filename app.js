@@ -18,15 +18,17 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false,
-
+    saveUninitialized: true,
+    store: new RedisStore(),
     cookie: {
       secure: process.env.NODE_ENV === "development" ? false : true,
       httpOnly: process.env.NODE_ENV === "development" ? false : true,
       sameSite: process.env.NODE_ENV === "development" ? false : "none",
+      maxAge:60000
     },
   })
 );
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(
@@ -46,7 +48,7 @@ app.use(
 app.use(passport.authenticate("session"));
 app.use(passport.initialize());
 app.use(passport.session());
-app.enable("trust proxy");
+app.set('trust proxy', 1);
 
 connectPassport();
 
