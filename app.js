@@ -9,10 +9,11 @@ import cors from "cors";
 
 const app = express();
 export default app;
-dotenv.config({
-  path: "./config/config.env",
-});
+// dotenv.config({
+//   path: "./config/config.env",
+// });
 
+dotenv.config();
 // Using Middlewares
 app.use(
   session({
@@ -28,7 +29,12 @@ app.use(
     },
   })
 );
-
+app.use(function(req,res,next){
+  if(!req.session){
+      return next(new Error('Oh no')) //handle error
+  }
+  next() //otherwise continue
+  });
 app.use(cookieParser());
 app.use(express.json());
 app.use(
