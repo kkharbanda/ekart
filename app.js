@@ -6,12 +6,14 @@ import cookieParser from "cookie-parser";
 import passport from "passport";
 import { errorMiddleware } from "./middlewares/errorMiddlewware.js";
 import cors from "cors";
-const app = express();
 
+const app = express();
+export default app;
 dotenv.config({
-    path : "./config/config.env"
-})
-app.use(cookieParser())
+  path: "./config/config.env",
+});
+
+// Using Middlewares
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -25,6 +27,14 @@ app.use(
     },
   })
 );
+app.use(cookieParser());
+app.use(express.json());
+app.use(
+  urlencoded({
+    extended: true,
+  })
+);
+
 app.use(
   cors({
     credentials: true,
@@ -38,19 +48,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.enable("trust proxy");
 
-app.use(express.json());
-app.use(
-  urlencoded({
-    extended: true,
-  })
-);
-
 connectPassport();
-//importing Routes
+
+// Importing Routes
 import userRoute from "./routes/user.js";
-import orderRoute from "./routes/order.js"
+import orderRoute from "./routes/order.js";
+
 app.use("/api/v1", userRoute);
 app.use("/api/v1", orderRoute);
+
 // Using Error Middleware
 app.use(errorMiddleware);
-export default app;
