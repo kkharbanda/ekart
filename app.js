@@ -19,7 +19,7 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    store: new RedisStore(),
+    
     cookie: {
       secure: process.env.NODE_ENV === "development" ? false : true,
       httpOnly: process.env.NODE_ENV === "development" ? false : true,
