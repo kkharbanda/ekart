@@ -9,32 +9,25 @@ import cors from "cors";
 
 const app = express();
 export default app;
-// dotenv.config({
-//   path: "./config/config.env",
-// });
+dotenv.config({
+  path: "./config/config.env",
+});
+ dotenv.config()
 
-dotenv.config();
 // Using Middlewares
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
-    
+    saveUninitialized: false,
+
     cookie: {
       secure: process.env.NODE_ENV === "development" ? false : true,
       httpOnly: process.env.NODE_ENV === "development" ? false : true,
       sameSite: process.env.NODE_ENV === "development" ? false : "none",
-      maxAge:60000
     },
   })
 );
-app.use(function(req,res,next){
-  if(!req.session){
-      return next(new Error('Oh no')) //handle error
-  }
-  next() //otherwise continue
-  });
 app.use(cookieParser());
 app.use(express.json());
 app.use(
@@ -48,14 +41,13 @@ app.use(
     credentials: true,
     origin: process.env.FRONTEND_URL,
     methods: ["GET", "POST", "PUT", "DELETE"],
-    optionSuccessStatus:200
   })
 );
 
 app.use(passport.authenticate("session"));
 app.use(passport.initialize());
 app.use(passport.session());
-app.set('trust proxy', 1);
+app.enable("trust proxy");
 
 connectPassport();
 
