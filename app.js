@@ -9,9 +9,9 @@ import cors from "cors";
 
 const app = express();
 export default app;
-dotenv.config({
-  path: "./config/config.env",
-});
+// dotenv.config({
+//   path: "./config/config.env",
+// });
  dotenv.config()
 
 // Using Middlewares
