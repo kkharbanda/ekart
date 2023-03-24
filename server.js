@@ -13,3 +13,4 @@ export const instance = new Razorpay({
 app.listen(process.env.PORT,()=>(
   `Server is working on PORT: ${process.env.PORT}, in ${process.env.NODE_ENV} MODE`
 ))
+// https://ekart-f8ej.onrender.com
